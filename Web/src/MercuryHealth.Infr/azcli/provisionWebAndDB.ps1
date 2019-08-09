@@ -65,28 +65,28 @@ param(
 )
 
 
-#region Login
+# #region Login
 
-# This logs in a service principal
-#
-Write-Output "Logging in to Azure with a service principal..."
-az login `
-    --service-principal `
-    --username $servicePrincipal `
-    --password $servicePrincipalSecret `
-    --tenant $servicePrincipalTenantId
-Write-Output "Done"
-Write-Output ""
+# # This logs in a service principal
+# #
+# Write-Output "Logging in to Azure with a service principal..."
+# az login `
+#     --service-principal `
+#     --username $servicePrincipal `
+#     --password $servicePrincipalSecret `
+#     --tenant $servicePrincipalTenantId
+# Write-Output "Done"
+# Write-Output ""
 
-# This sets the subscription to the subscription I need all my apps to
-# run in
-#
-Write-Output "Setting default azure subscription..."
-az account set `
-    --subscription $azureSubscriptionName
-Write-Output "Done"
-Write-Output ""
-#endregion
+# # This sets the subscription to the subscription I need all my apps to
+# # run in
+# #
+# Write-Output "Setting default azure subscription..."
+# az account set `
+#     --subscription $azureSubscriptionName
+# Write-Output "Done"
+# Write-Output ""
+# #endregion
 
 # this defines my time 1 up function which will deploy and configure the infrastructure 
 # for my web app service and sql server
