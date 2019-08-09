@@ -212,6 +212,46 @@ function 1_Up {
     Write-Output "Done setting environment string"
     Write-Output ""
     #endregion
+
+
+
+    #region create application insights for web app
+    # this creates an instance of appliction insight for node 1
+    #
+    Write-Output "creating application insight for web app..."
+    $appInsightCreateResponse=$(az resource create `
+        --resource-group $resourceGroupName `
+        --resource-type "Microsoft.Insights/components" `
+        --name $($webAppName + "AppInsight") `
+        --properties '{\"Application_Type\":\"web\"}') | ConvertFrom-Json
+    Write-Output "done creating app insight for node 1: $appInsightCreateResponse"
+    Write-Output ""
+
+    # this gets the instrumentation key from the create response
+    #
+    Write-Output "getting instrumentation key from the create response..."
+    $instrumentationKey = $appInsightCreateResponse.properties.InstrumentationKey
+    Write-Output "done getting instrumentation key"
+    Write-Output ""
+
+    # this sets application insight to web app
+    #
+    Write-Output "setting and configuring application insight for webapp..."
+    az webapp config appsettings set `
+        --resource-group $resourceGroupName `
+        --name $webAppName `
+        --slot-settings APPINSIGHTS_INSTRUMENTATIONKEY=$instrumentationKey `
+                        ApplicationInsightsAgent_EXTENSION_VERSION=~2 `
+                        XDT_MicrosoftApplicationInsights_Mode=recommended `
+                        APPINSIGHTS_PROFILERFEATURE_VERSION=1.0.0 `
+                        DiagnosticServices_EXTENSION_VERSION=~3 `
+                        APPINSIGHTS_SNAPSHOTFEATURE_VERSION=1.0.0 `
+                        SnapshotDebugger_EXTENSION_VERSION=~1 `
+                        InstrumentationEngine_EXTENSION_VERSION=~1 `
+                        XDT_MicrosoftApplicationInsights_BaseExtension=~1
+    Write-Output "done setting and configuring application insight for web app"
+    Write-Output ""
+    #endregion
 }
 
 Install-Module -Name VersionInfrastructure -Force -Scope CurrentUser
