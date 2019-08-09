@@ -208,7 +208,7 @@ function 1_Up {
     az webapp config appsettings set `
         --name $webAppName `
         --resource-group $resourceGroupName `
-        --settings Environment=$("$environment")
+        --settings Environment="$environment"
     Write-Output "Done setting environment string"
     Write-Output ""
     #endregion
