@@ -216,6 +216,6 @@ function 1_Up {
 
 Install-Module -Name VersionInfrastructure -Force -Scope CurrentUser
 Update-InfrastructureVersion `
-    -infraToolsFunctionName $Env:IAC_EXCLUSIVE_INFRATOOLSFUNCTIONNAME `
-    -infraToolsTableName $Env:IAC_INFRATABLENAME `
-    -deploymentStage $Env:IAC_DEPLOYMENTSTAGE
+    -infraToolsFunctionName $Env:INFRATOOLS_FUNCTIONNAME `
+    -infraToolsTableName $Env:INFRATOOLS_TABLENAME `
+    -deploymentStage $Env:INFRATOOLS_DEPLOYMENTSTAGE
