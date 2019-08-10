@@ -11,7 +11,7 @@ namespace HealthClinic
         public static Task<List<FoodLogModel>> GetFoodLogs()
         {
             AppCenterService.TrackEvent(AppCenterConstants.GetFoodLogsFromAPITriggered);
-            return GetDataObjectFromAPI<List<FoodLogModel>>(APIConstants.GetFoodLogsUrl);
+            return GetDataObjectFromAPI<List<FoodLogModel>>(APIConstants.GetTheFoodLogsUrl);
         }
 
         public static Task<HttpResponseMessage> PostFoodPhoto(byte[] foodPhoto)
