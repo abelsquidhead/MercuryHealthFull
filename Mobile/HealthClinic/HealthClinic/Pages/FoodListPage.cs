@@ -15,7 +15,7 @@ namespace HealthClinic
         #endregion
 
         #region Constructors
-        public FoodListPage() : base(PageTitleConstants.FoodListPage)
+        public FoodListPage() : base(PageTitleConstants.GetFoodListPage)
         {
             _addFoodButton = new ToolbarItem
             {
