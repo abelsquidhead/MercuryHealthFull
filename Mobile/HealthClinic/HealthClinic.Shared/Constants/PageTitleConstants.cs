@@ -4,14 +4,5 @@
     {
         public const string AddFoodPage = "Add Food";
         public const string FoodListPage = "Food Consumed";
-
-        public static string GetFoodListPage
-        {
-            get
-            {
-                return "Food Consumed " + APIConstants.GetServiceIcon;
-            }
-        }
-
     }
 }

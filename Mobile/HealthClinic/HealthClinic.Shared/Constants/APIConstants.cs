@@ -31,28 +31,7 @@ namespace HealthClinic.Shared
             }
         }
 
-        public static string GetServiceIcon
-        {
-            get
-            {
-                try
-                {
-                    var url = "https://mhinfratoolsfunction.azurewebsites.net/api/MobileEnvRetriever?appname=mercuryhealth&buildnumberservicenameid=" + buildNumber + "getfoodlogsurl";
-                    var result = new WebClient().DownloadString(url);
-                    var mobileServiceEnv = JsonConvert.DeserializeObject<MobileServiceEnv>(result);
-
-                    if (mobileServiceEnv.Environment.ToLower().Equals("prod"))
-                    {
-                        return "";
-                    }
-                    return mobileServiceEnv.Environment;
-                }
-                catch(Exception)
-                {
-                    return "E";
-                }
-            }
-        }
+        
     }
 
     public class MobileServiceEnv
