@@ -329,7 +329,7 @@ function 2_UP {
     Write-Output "done creating db tables"
     Write-Output ""
     
-    Restore-Data -dbServerName $serverName -dbId $dbName -userId $adminLogin -userPassword $adminPassword -env $environment -tableName FoodLogEntries
+    Restore-Data -dbServerName $serverName -dbId $dbName -userId $adminLogin -userPassword $adminPassword -currEnv $environment -tableName FoodLogEntries
     #endregion
 
     Write-Output "Done with function 2_Up"
