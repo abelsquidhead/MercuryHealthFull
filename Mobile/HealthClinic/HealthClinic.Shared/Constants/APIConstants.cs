@@ -1,8 +1,4 @@
-﻿using Newtonsoft.Json;
-using System;
-using System.Net;
-
-namespace HealthClinic.Shared
+﻿namespace HealthClinic.Shared
 {
     public static class APIConstants
     {
@@ -17,41 +13,8 @@ namespace HealthClinic.Shared
 
             get
             {
-                string url = "https://mhinfratoolsfunction.azurewebsites.net/api/MobileEnvRetriever?appname=mercuryhealth&buildnumberservicenameid=" + buildNumber + "getfoodlogsurl";
-                string result1 = new WebClient().DownloadString(url);
-                var deserializedObj = JsonConvert.DeserializeObject<MobileServiceEnv>(result1);
-
-                return deserializedObj.Url;
+                return "";
             }
         }
-
-        public static string GetServiceEnvironmentIcon
-        {
-            get
-            {
-                string url = "https://mhinfratoolsfunction.azurewebsites.net/api/MobileEnvRetriever?appname=mercuryhealth&buildnumberservicenameid=" + buildNumber + "getfoodlogsurl";
-                string result1 = new WebClient().DownloadString(url);
-                var mobileServiceEnv = JsonConvert.DeserializeObject<MobileServiceEnv>(result1);
-
-                if (mobileServiceEnv.EnvironmentName.ToLower().Equals("beta"))
-                {
-                    return " B";
-                }
-                else
-                {
-                    return "";
-                }
-            }
-        }
-    }
-
-    public class MobileServiceEnv
-    {
-        public string EnvironmentName { get; set; }
-        public string Url { get; set; }
-        public string PartitionKey { get; set; }
-        public string RowKey { get; set; }
-        public DateTime TimeStamp { get; set; }
-        public string Etag { get; set; }
     }
 }

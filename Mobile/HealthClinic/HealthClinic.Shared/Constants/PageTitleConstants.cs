@@ -9,7 +9,7 @@
         {
             get
             {
-                return FoodListPage + APIConstants.GetServiceEnvironmentIcon;
+                return FoodListPage + APIConstants.buildNumber;
             }
         }
     }
