@@ -9,8 +9,9 @@
         {
             get
             {
-                return FoodListPage + APIConstants.buildNumber;
+                return FoodListPage + " " + APIConstants.GetServiceIcon;
             }
         }
+
     }
 }
