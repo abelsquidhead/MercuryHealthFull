@@ -131,6 +131,16 @@ function Restore-Data {
         Invoke-Sqlcmd -ConnectionString "Server=tcp:$dbServerName.database.windows.net,1433;Initial Catalog=$dbId;Persist Security Info=False;User ID=$userId;Password=$userPassword;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;" `
             -Query "INSERT INTO FoodLogEntries (Description, Quantity, MealTime, Tags, Calories, ProteinInGrams, FatInGrams, CarbohydratesInGrams, SodiumInGrams, MemberProfile_Id, Color) `
                     VALUES ('BETA Food', 1, 8/11/2019, 'demo', 1215, 3.2, 12.8, 27, 33, null , null)"
+
+        Invoke-Sqlcmd -ConnectionString "Server=tcp:$dbServerName.database.windows.net,1433;Initial Catalog=$dbId;Persist Security Info=False;User ID=$userId;Password=$userPassword;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;" `
+            -Query "INSERT INTO Exercises (Name, Description, VideoUrl, MusclesInvolved, Equipment) `
+                    VALUES ('Walking', 'Walking 2 miles', null, 'Legs, heart, lung', 'Walking Shoes')"
+        Invoke-Sqlcmd -ConnectionString "Server=tcp:$dbServerName.database.windows.net,1433;Initial Catalog=$dbId;Persist Security Info=False;User ID=$userId;Password=$userPassword;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;" `
+            -Query "INSERT INTO Exercises (Name, Description, VideoUrl, MusclesInvolved, Equipment) `
+                    VALUES ('Talking', 'Talking energetically', null, 'Mouth, heart, lung', 'None')"
+        Invoke-Sqlcmd -ConnectionString "Server=tcp:$dbServerName.database.windows.net,1433;Initial Catalog=$dbId;Persist Security Info=False;User ID=$userId;Password=$userPassword;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;" `
+            -Query "INSERT INTO Exercises (Name, Description, VideoUrl, MusclesInvolved, Equipment) `
+                    VALUES ('Beta Exercise', 'Demo', null, 'Everything', 'laptop and phone')"
         Write-Output "done restoring data from backup"
     }
     else {
@@ -144,6 +154,17 @@ function Restore-Data {
         Invoke-Sqlcmd -ConnectionString "Server=tcp:$dbServerName.database.windows.net,1433;Initial Catalog=$dbId;Persist Security Info=False;User ID=$userId;Password=$userPassword;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;" `
             -Query "INSERT INTO FoodLogEntries (Description, Quantity, MealTime, Tags, Calories, ProteinInGrams, FatInGrams, CarbohydratesInGrams, SodiumInGrams, MemberProfile_Id, Color) `
                     VALUES ('PROD Food', 1, 8/11/2019, 'demo', 1215, 3.2, 12.8, 27, 33, null , null)"
+
+        Invoke-Sqlcmd -ConnectionString "Server=tcp:$dbServerName.database.windows.net,1433;Initial Catalog=$dbId;Persist Security Info=False;User ID=$userId;Password=$userPassword;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;" `
+            -Query "INSERT INTO Exercises (Name, Description, VideoUrl, MusclesInvolved, Equipment) `
+                    VALUES ('Walking', 'Power walking 5 miles', null, 'Legs, heart, lung', 'Walking Shoes')"
+        Invoke-Sqlcmd -ConnectionString "Server=tcp:$dbServerName.database.windows.net,1433;Initial Catalog=$dbId;Persist Security Info=False;User ID=$userId;Password=$userPassword;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;" `
+            -Query "INSERT INTO Exercises (Name, Description, VideoUrl, MusclesInvolved, Equipment) `
+                    VALUES ('Running', 'Marathon Training', null, 'Mouth, heart, lung', 'None')"
+        Invoke-Sqlcmd -ConnectionString "Server=tcp:$dbServerName.database.windows.net,1433;Initial Catalog=$dbId;Persist Security Info=False;User ID=$userId;Password=$userPassword;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;" `
+            -Query "INSERT INTO Exercises (Name, Description, VideoUrl, MusclesInvolved, Equipment) `
+                    VALUES ('PROD Exercise', 'Demo', null, 'Everything', 'laptop and phone')"
+
         Write-Output "done restoring data from backup"
 
     }
@@ -325,7 +346,10 @@ function 2_UP {
     Write-Output "creating db tables..."
     Invoke-Sqlcmd `
         -ConnectionString "Server=tcp:$($serverName).database.windows.net,1433;Initial Catalog=$dbName;Persist Security Info=False;User ID=$adminLogin;Password=$adminPassword;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;" `
-        -Query "IF NOT EXISTS (SELECT * FROM sysobjects WHERE name='FoodLogEntries' and xtype='U') CREATE TABLE FoodLogEntries ( Id INT IDENTITY (1, 1) NOT NULL, Description NVARCHAR (MAX) NULL, Quantity REAL NOT NULL, MealTime DATETIME NOT NULL, Tags NVARCHAR (MAX) NULL, Calories INT NOT NULL, ProteinInGrams DECIMAL (18, 2) NOT NULL, FatInGrams DECIMAL (18, 2) NOT NULL, CarbohydratesInGrams DECIMAL (18, 2) NOT NULL, SodiumInGrams DECIMAL (18, 2) NOT NULL, MemberProfile_Id INT NULL, Color NVARCHAR(50) NULL, );"
+        -Query "IF NOT EXISTS (SELECT * FROM sysobjects WHERE name='FoodLogEntries' and xtype='U') CREATE TABLE FoodLogEntries ( Id INT IDENTITY (1, 1) NOT NULL, Description NVARCHAR (MAX) NULL, Quantity REAL NOT NULL, MealTime DATETIME NOT NULL, Tags NVARCHAR (MAX) NULL, Calories INT NOT NULL, ProteinInGrams DECIMAL (18, 2) NOT NULL, FatInGrams DECIMAL (18, 2) NOT NULL, CarbohydratesInGrams DECIMAL (18, 2) NOT NULL, SodiumInGrams DECIMAL (18, 2) NOT NULL, MemberProfile_Id INT NULL, Color NVARCHAR(50) NULL );"
+    Invoke-Sqlcmd `
+        -ConnectionString "Server=tcp:$($serverName).database.windows.net,1433;Initial Catalog=$dbName;Persist Security Info=False;User ID=$adminLogin;Password=$adminPassword;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;" `
+        -Query "IF NOT EXISTS (SELECT * FROM sysobjects WHERE name='Exercises' and xtype='U') CREATE TABLE Exercises ( Id UNIQUEIDENTIFIER DEFAULT (newid()) NOT NULL, Name NVARCHAR (MAX) NULL, Description NVARCHAR (MAX) NULL, VideoUrl NVARCHAR (MAX) NULL, MusclesInvolved]NVARCHAR (MAX) NULL, Equipment NVARCHAR (MAX) NULL, Exercise_Id UNIQUEIDENTIFIER NULL);"   
     Write-Output "done creating db tables"
     Write-Output ""
     
