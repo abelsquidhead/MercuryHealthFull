@@ -111,14 +111,16 @@ function Restore-Data {
 
         [Parameter(Mandatory = $True)]
         [string]
-        $env,
+        $currEnv,
 
         [Parameter(Mandatory = $True)]
         [string]
         $tableName
     )
 
-    if ($env -eq "beta") {
+    Write-Output "currEnv is: $currEnv"
+
+    if ($currEnv -eq "beta") {
         Write-Output "restoring data from backup..."
         Invoke-Sqlcmd -ConnectionString "Server=tcp:$dbServerName.database.windows.net,1433;Initial Catalog=$dbId;Persist Security Info=False;User ID=$userId;Password=$userPassword;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;" `
             -Query "INSERT INTO FoodLogEntries (Description, Quantity, MealTime, Tags, Calories, ProteinInGrams, FatInGrams, CarbohydratesInGrams, SodiumInGrams, MemberProfile_Id, Color) `
@@ -327,9 +329,7 @@ function 2_UP {
     Write-Output "done creating db tables"
     Write-Output ""
     
-    Write-Output "restoring data from backup..."
     Restore-Data -dbServerName $serverName -dbId $dbName -userId $adminLogin -userPassword $adminPassword -env $environment -tableName FoodLogEntries
-    Write-Output "done restoring data from backup..."
     #endregion
 
     Write-Output "Done with function 2_Up"
