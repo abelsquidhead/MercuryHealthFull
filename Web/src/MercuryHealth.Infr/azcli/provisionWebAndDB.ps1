@@ -120,7 +120,7 @@ function Restore-Data {
 
     Write-Output "currEnv is: $currEnv"
 
-    if ($currEnv -eq "beta") {
+    if ($currEnv -eq "[Beta]") {
         Write-Output "restoring data from backup..."
         Invoke-Sqlcmd -ConnectionString "Server=tcp:$dbServerName.database.windows.net,1433;Initial Catalog=$dbId;Persist Security Info=False;User ID=$userId;Password=$userPassword;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;" `
             -Query "INSERT INTO FoodLogEntries (Description, Quantity, MealTime, Tags, Calories, ProteinInGrams, FatInGrams, CarbohydratesInGrams, SodiumInGrams, MemberProfile_Id, Color) `
