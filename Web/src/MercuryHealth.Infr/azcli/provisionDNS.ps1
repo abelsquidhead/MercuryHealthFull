@@ -245,7 +245,7 @@ function 2_Up {
         $json = $newDnsEntry | ConvertTo-Json
         $newDnsResponse = $(Invoke-RestMethod "https://api.cloudflare.com/client/v4/zones/$cloudFlareZone/dns_records" `
         -Headers $headers `
-        -Method Put `
+        -Method Post `
         -Body $json `
         -ContentType 'application/json')
 
