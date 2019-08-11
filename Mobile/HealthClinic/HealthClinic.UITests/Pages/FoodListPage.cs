@@ -13,7 +13,7 @@ namespace HealthClinic.UITests
         #endregion
 
         #region Constructors
-        public FoodListPage(IApp app) : base(app, PageTitleConstants.FoodListPage)
+        public FoodListPage(IApp app) : base(app, PageTitleConstants.GetFoodListPage)
         {
             _addFoodButton = x => x.Marked(AutomationIdConstants.FoodListPage_AddFoodButton);
             _foodListView = x => x.Marked(AutomationIdConstants.FoodListPage_FoodList);
