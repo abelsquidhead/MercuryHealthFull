@@ -25,7 +25,7 @@ namespace HealthClinic.Shared
 
                     return mobileServiceEnv.Url;
                 }
-                catch(Exception) { }
+                catch (Exception) { }
 
                 return GetFoodLogsUrl;
             }
@@ -35,20 +35,10 @@ namespace HealthClinic.Shared
         {
             get
             {
-                try
-                {
-                    var url = "https://mhinfratoolsfunction.azurewebsites.net/api/MobileEnvRetriever?appname=mercuryhealth&buildnumberservicenameid=" + buildNumber + "getfoodlogsurl";
-                    var result = new WebClient().DownloadString(url);
-                    var mobileServiceEnv = JsonConvert.DeserializeObject<MobileServiceEnv>(result);
-
-                    if (mobileServiceEnv.Environment.ToLower().Equals("beta"))
-                    {
-                        return "B";
-                    }
-                }
-                catch (Exception) { }
-
-                return "";
+                var url = "https://mhinfratoolsfunction.azurewebsites.net/api/MobileEnvRetriever?appname=mercuryhealth&buildnumberservicenameid=" + buildNumber + "getfoodlogsurl";
+                var result = new WebClient().DownloadString(url);
+                var mobileServiceEnv = JsonConvert.DeserializeObject<MobileServiceEnv>(result);
+                return mobileServiceEnv.Environment;
             }
         }
     }
