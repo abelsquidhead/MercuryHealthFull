@@ -91,7 +91,7 @@ Write-Output ""
 #region function to upload default data
 # this function uploads default data to a table
 #
-function Upload-DefaultData {
+function Restore-Data {
     param(
         [Parameter(Mandatory = $True)]
         [string]
@@ -111,28 +111,40 @@ function Upload-DefaultData {
 
         [Parameter(Mandatory = $True)]
         [string]
-        $uploadFile,
+        $env,
 
         [Parameter(Mandatory = $True)]
         [string]
         $tableName
     )
-    Write-Output "Checking data for $tableName..."
-    $numRows=$(Invoke-Sqlcmd -ConnectionString "Server=tcp:$dbServerName.database.windows.net,1433;Initial Catalog=$dbId;Persist Security Info=False;User ID=$userId;Password=$userPassword;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;" `
-        -Query "SELECT Count(*) FROM $tableName" `
-    )
-    if ($numRows.Column1 -eq 0) {
-        Write-Output "No data for $tableName, loading default data..."
-        $fullDbName = $dbId + ".dbo." + $tableName
-        $fullServerName = $dbServerName + ".database.windows.net"
-        & "C:\Program Files\Microsoft SQL Server\Client SDK\ODBC\170\Tools\Binn\bcp" $fullDbName in d:\a\r1\a\_MercuryHealthFull-CI\web\data\$uploadFile -S $fullServerName -U $userId -P "$userPassword" -q -c -t "," -F 2
-        Write-Output "done upload default data for $tableName"
+
+    if ($env -eq "beta") {
+        Write-Output "restoring data from backup..."
+        Invoke-Sqlcmd -ConnectionString "Server=tcp:$dbServerName.database.windows.net,1433;Initial Catalog=$dbId;Persist Security Info=False;User ID=$userId;Password=$userPassword;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;" `
+            -Query "INSERT INTO FoodLogEntries (Description, Quantity, MealTime, Tags, Calories, ProteinInGrams, FatInGrams, CarbohydratesInGrams, SodiumInGrams, MemberProfile_Id, Color) `
+                    VALUES ('Cheeseburger', 1, 8/11/2019, 'lunch, junky', 1215, 3.2, 12.8, 27, 33, null , null)"
+        Invoke-Sqlcmd -ConnectionString "Server=tcp:$dbServerName.database.windows.net,1433;Initial Catalog=$dbId;Persist Security Info=False;User ID=$userId;Password=$userPassword;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;" `
+            -Query "INSERT INTO FoodLogEntries (Description, Quantity, MealTime, Tags, Calories, ProteinInGrams, FatInGrams, CarbohydratesInGrams, SodiumInGrams, MemberProfile_Id, Color) `
+                    VALUES ('Fries', 1, 8/11/2019, 'lunch, junky', 543, .34,.22 , 12, 4.2, null , null)"
+        Invoke-Sqlcmd -ConnectionString "Server=tcp:$dbServerName.database.windows.net,1433;Initial Catalog=$dbId;Persist Security Info=False;User ID=$userId;Password=$userPassword;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;" `
+            -Query "INSERT INTO FoodLogEntries (Description, Quantity, MealTime, Tags, Calories, ProteinInGrams, FatInGrams, CarbohydratesInGrams, SodiumInGrams, MemberProfile_Id, Color) `
+                    VALUES ('BETA Food', 1, 8/11/2019, 'demo', 1215, 3.2, 12.8, 27, 33, null , null)"
+        Write-Output "done restoring data from backup"
     }
     else {
-        Write-Output "Data already exists for $tableName"
-    }    
-    Write-Output "done checking data for $tableName"
-    Write-Output ""
+        Write-Output "restoring data from backup..."
+        Invoke-Sqlcmd -ConnectionString "Server=tcp:$dbServerName.database.windows.net,1433;Initial Catalog=$dbId;Persist Security Info=False;User ID=$userId;Password=$userPassword;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;" `
+            -Query "INSERT INTO FoodLogEntries (Description, Quantity, MealTime, Tags, Calories, ProteinInGrams, FatInGrams, CarbohydratesInGrams, SodiumInGrams, MemberProfile_Id, Color) `
+                    VALUES ('Apple', 1, 8/11/2019, 'fruit, lunch', 112, 3.2, 12.8, 27, 33, null , null)"
+        Invoke-Sqlcmd -ConnectionString "Server=tcp:$dbServerName.database.windows.net,1433;Initial Catalog=$dbId;Persist Security Info=False;User ID=$userId;Password=$userPassword;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;" `
+            -Query "INSERT INTO FoodLogEntries (Description, Quantity, MealTime, Tags, Calories, ProteinInGrams, FatInGrams, CarbohydratesInGrams, SodiumInGrams, MemberProfile_Id, Color) `
+                    VALUES ('Eggs', 2, 8/11/2019, 'protein', 84, 340,.22 , 12, 4.2, null , null)"
+        Invoke-Sqlcmd -ConnectionString "Server=tcp:$dbServerName.database.windows.net,1433;Initial Catalog=$dbId;Persist Security Info=False;User ID=$userId;Password=$userPassword;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;" `
+            -Query "INSERT INTO FoodLogEntries (Description, Quantity, MealTime, Tags, Calories, ProteinInGrams, FatInGrams, CarbohydratesInGrams, SodiumInGrams, MemberProfile_Id, Color) `
+                    VALUES ('PROD Food', 1, 8/11/2019, 'demo', 1215, 3.2, 12.8, 27, 33, null , null)"
+        Write-Output "done restoring data from backup"
+
+    }
 }
 #endregion
 
@@ -316,7 +328,7 @@ function 2_UP {
     Write-Output ""
     
     Write-Output "restoring data from backup..."
-    Upload-DefaultData -dbServerName $serverName -dbId $dbName -userId $adminLogin -userPassword $adminPassword -uploadFile "FoodLogEntries-beta.csv" -tableName FoodLogEntries
+    Restore-Data -dbServerName $serverName -dbId $dbName -userId $adminLogin -userPassword $adminPassword -env $environment -tableName FoodLogEntries
     Write-Output "done restoring data from backup..."
     #endregion
 
