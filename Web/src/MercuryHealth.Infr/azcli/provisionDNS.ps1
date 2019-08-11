@@ -76,6 +76,7 @@ Write-Output ""
 # for my DNS settings up in cloud flare
 #
 function 1_Up {
+    Write-Output "executing function 1_Up..."
     # this lists all dns records from cloudflare
     #
     Write-Output "getting all dns records from cloudflare..."
@@ -162,12 +163,16 @@ function 1_Up {
         Write-Output $newDnsResponse
         Write-Output ""
     }
+
+    Write-Output "done with function 1_Up"
+    Write-Output ""
 }
 
 # This brings my infrastructure up to version 2 where it sets up the apex domain url (no www)
 # in dns to point and direct to the right place
 #
 function 2_Up {
+    Write-Output "Executing function 2_Up"
     # this lists all dns records from cloudflare
     #
     Write-Output "getting all dns records from cloudflare..."
@@ -295,7 +300,7 @@ function 2_Up {
     # Add in the apex domain rule
     #
     Write-Output "adding apex domain rule..."
-    $json = '{"targets":[{"target":"url", "constraint":{"operator":"matches","value":"abelurlist.club/*"}}],"actions":[{"id":"forwarding_url","value": {"url": "https://www.abelurlist.club/$1","status_code": 301}}],"priority":1,"status":"active"}'
+    $json = '{"targets":[{"target":"url", "constraint":{"operator":"matches","value":"abelmercuryhealth-dev.com/*"}}],"actions":[{"id":"forwarding_url","value": {"url": "https://www.abelmercuryhealth-dev.com/$1","status_code": 301}}],"priority":1,"status":"active"}'
     $headers = New-Object "System.Collections.Generic.Dictionary[[String],[String]]"
     $headers.Add("X-Auth-Key", $cloudFlareKey)
     $headers.Add("X-Auth-Email", $cloudFlareEmail)
@@ -307,6 +312,9 @@ function 2_Up {
         -ContentType 'application/json'
     Write-Output $addRuleResponse
     Write-Output "done adding apex domain rule"
+    Write-Output ""
+
+    Write-Output "done with 2_Up"
     Write-Output ""
 }
 

@@ -334,6 +334,7 @@ function 1_Up {
     #endregion
     
     Write-Output "Done with function 1_Up"
+    Write-Output ""
 }
 
 # this defines my time 2 up fuction which will set up and restore database from backups
@@ -357,6 +358,7 @@ function 2_UP {
     #endregion
 
     Write-Output "Done with function 2_Up"
+    Write-Output ""
 }
 
 Install-Module -Name VersionInfrastructure -Force -Scope CurrentUser
