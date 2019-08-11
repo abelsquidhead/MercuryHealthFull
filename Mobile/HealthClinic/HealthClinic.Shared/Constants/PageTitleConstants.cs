@@ -9,7 +9,7 @@
         {
             get
             {
-                return FoodListPage + " " + APIConstants.GetServiceIcon;
+                return "Food Consumed " + APIConstants.GetServiceIcon;
             }
         }
 

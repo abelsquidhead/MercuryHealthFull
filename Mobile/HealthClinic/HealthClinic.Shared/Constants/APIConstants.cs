@@ -35,15 +35,22 @@ namespace HealthClinic.Shared
         {
             get
             {
-                var url = "https://mhinfratoolsfunction.azurewebsites.net/api/MobileEnvRetriever?appname=mercuryhealth&buildnumberservicenameid=" + buildNumber + "getfoodlogsurl";
-                var result = new WebClient().DownloadString(url);
-                var mobileServiceEnv = JsonConvert.DeserializeObject<MobileServiceEnv>(result);
-
-                if (mobileServiceEnv.Environment.ToLower().Equals("prod"))
+                try
                 {
-                    return "";
+                    var url = "https://mhinfratoolsfunction.azurewebsites.net/api/MobileEnvRetriever?appname=mercuryhealth&buildnumberservicenameid=" + buildNumber + "getfoodlogsurl";
+                    var result = new WebClient().DownloadString(url);
+                    var mobileServiceEnv = JsonConvert.DeserializeObject<MobileServiceEnv>(result);
+
+                    if (mobileServiceEnv.Environment.ToLower().Equals("prod"))
+                    {
+                        return "";
+                    }
+                    return mobileServiceEnv.Environment;
                 }
-                return mobileServiceEnv.Environment;
+                catch(Exception)
+                {
+                    return "E";
+                }
             }
         }
     }
