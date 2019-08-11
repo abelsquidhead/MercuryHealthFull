@@ -37,7 +37,7 @@ param(
 
     [Parameter(Mandatory = $True)]  
     [string]
-    $adminlogin,
+    $adminLogin,
 
     [Parameter(Mandatory = $True)]  
     [string]
@@ -66,7 +66,6 @@ param(
 
 
 #region Login
-
 # This logs in a service principal
 #
 Write-Output "Logging in to Azure with a service principal..."
@@ -88,9 +87,58 @@ Write-Output "Done"
 Write-Output ""
 #endregion
 
+
+#region function to upload default data
+# this function uploads default data to a table
+#
+function Upload-DefaultData {
+    param(
+        [Parameter(Mandatory = $True)]
+        [string]
+        $dbServerName,
+
+        [Parameter(Mandatory = $True)]
+        [string]
+        $dbId,
+
+        [Parameter(Mandatory = $True)]
+        [string]
+        $userId,
+
+        [Parameter(Mandatory = $True)]
+        [string]
+        $userPassword,
+
+        [Parameter(Mandatory = $True)]
+        [string]
+        $uploadFile,
+
+        [Parameter(Mandatory = $True)]
+        [string]
+        $tableName
+    )
+    Write-Output "Checking data for $tableName..."
+    $numRows=$(Invoke-Sqlcmd -ConnectionString "Server=tcp:$dbServerName.database.windows.net,1433;Initial Catalog=$dbId;Persist Security Info=False;User ID=$userId;Password=$userPassword;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;" `
+        -Query "SELECT Count(*) FROM $tableName" `
+    )
+    if ($numRows.Column1 -eq 0) {
+        Write-Output "No data for $tableName, loading default data..."
+        $fullDbName = $dbId + ".dbo." + $tableName
+        $fullServerName = $dbServerName + ".database.windows.net"
+        & "C:\Program Files\Microsoft SQL Server\Client SDK\ODBC\170\Tools\Binn\bcp" $fullDbName in $releaseDirectory\drop\data\$uploadFile -S $fullServerName -U $userId -P "$userPassword" -q -c -t "," -F 2
+        Write-Output "done upload default data for $tableName"
+    }
+    else {
+        Write-Output "Data already exists for $tableName"
+    }    
+    Write-Output "done checking data for $tableName"
+    Write-Output ""
+}
+#endregion
+
+
 # this defines my time 1 up function which will deploy and configure the infrastructure 
 # for my web app service and sql server
-
 function 1_Up {
     Write-Output "In function 1_Up"
 
@@ -106,7 +154,6 @@ function 1_Up {
     #endregion
 
 
-
     #region Create Sql Server and database
     # Create a logical sql server in the resource group
     # 
@@ -116,7 +163,7 @@ function 1_Up {
         --name $serverName `
         --resource-group $resourceGroupName `
         --location $dbLocation  `
-        --admin-user $adminlogin `
+        --admin-user $adminLogin `
         --admin-password $adminPassword
     }
     catch {
@@ -161,7 +208,6 @@ function 1_Up {
     Write-Output "Done creating sql db"
     Write-Output ""
     #endregion
-
 
 
     #region create app service
@@ -214,7 +260,6 @@ function 1_Up {
     #endregion
 
 
-
     #region create application insights for web app
     # this creates an instance of appliction insight for node 1
     #
@@ -252,6 +297,25 @@ function 1_Up {
     Write-Output "done setting and configuring application insight for web app"
     Write-Output ""
     #endregion
+    
+    Write-Output "Done with function 1_Up"
+}
+
+# this defines my time 2 up fuction which will set up and restore database from backups
+function 2_UP {
+    Write-Output "In function 2_Up"
+    #region create db tables
+
+    # this block creates the initial tables if needed
+    #
+    Write-Output "creating db tables"
+    Invoke-Sqlcmd `
+        -ConnectionString "Server=tcp:$($serverName).database.windows.net,1433;Initial Catalog=$dbName;Persist Security Info=False;User ID=$adminLogin;Password=$adminPassword;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;" `
+        -Query "IF NOT EXISTS (SELECT * FROM sysobjects WHERE name='FoodLogEntries' and xtype='U') CREATE TABLE Courses ( Id INT IDENTITY (1, 1) NOT NULL, Description NVARCHAR (MAX) NULL, Quantity REAL NOT NULL, MealTime DATETIME NOT NULL, Tags NVARCHAR (MAX) NULL, Calories INT NOT NULL, ProteinInGrams DECIMAL (18, 2) NOT NULL, FatInGrams DECIMAL (18, 2) NOT NULL, CarbohydratesInGrams DECIMAL (18, 2) NOT NULL, SodiumInGrams DECIMAL (18, 2) NOT NULL, MemberProfile_Id INT NULL, Color NVARCHAR(50) NULL, );"
+    Write-Output "done creating db tables"
+    Write-Output ""
+    #endregion
+    Write-Output "Done with function 2_Up"
 }
 
 Install-Module -Name VersionInfrastructure -Force -Scope CurrentUser
