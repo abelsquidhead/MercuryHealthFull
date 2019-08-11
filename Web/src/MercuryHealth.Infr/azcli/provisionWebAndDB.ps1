@@ -125,7 +125,7 @@ function Upload-DefaultData {
         Write-Output "No data for $tableName, loading default data..."
         $fullDbName = $dbId + ".dbo." + $tableName
         $fullServerName = $dbServerName + ".database.windows.net"
-        & "C:\Program Files\Microsoft SQL Server\Client SDK\ODBC\170\Tools\Binn\bcp" $fullDbName in $releaseDirectory\drop\data\$uploadFile -S $fullServerName -U $userId -P "$userPassword" -q -c -t "," -F 2
+        & "C:\Program Files\Microsoft SQL Server\Client SDK\ODBC\170\Tools\Binn\bcp" $fullDbName in $releaseDirectory\_MercuryHealthFull-CI\web\data\$uploadFile -S $fullServerName -U $userId -P "$userPassword" -q -c -t "," -F 2
         Write-Output "done upload default data for $tableName"
     }
     else {
@@ -304,17 +304,22 @@ function 1_Up {
 # this defines my time 2 up fuction which will set up and restore database from backups
 function 2_UP {
     Write-Output "In function 2_Up"
-    #region create db tables
 
+    #region create db tables
     # this block creates the initial tables if needed
     #
-    Write-Output "creating db tables"
+    Write-Output "creating db tables..."
     Invoke-Sqlcmd `
         -ConnectionString "Server=tcp:$($serverName).database.windows.net,1433;Initial Catalog=$dbName;Persist Security Info=False;User ID=$adminLogin;Password=$adminPassword;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;" `
         -Query "IF NOT EXISTS (SELECT * FROM sysobjects WHERE name='FoodLogEntries' and xtype='U') CREATE TABLE Courses ( Id INT IDENTITY (1, 1) NOT NULL, Description NVARCHAR (MAX) NULL, Quantity REAL NOT NULL, MealTime DATETIME NOT NULL, Tags NVARCHAR (MAX) NULL, Calories INT NOT NULL, ProteinInGrams DECIMAL (18, 2) NOT NULL, FatInGrams DECIMAL (18, 2) NOT NULL, CarbohydratesInGrams DECIMAL (18, 2) NOT NULL, SodiumInGrams DECIMAL (18, 2) NOT NULL, MemberProfile_Id INT NULL, Color NVARCHAR(50) NULL, );"
     Write-Output "done creating db tables"
     Write-Output ""
+    
+    Write-Output "restoring data from backup..."
+    Upload-DefaultData -dbServerName $serverName -dbId $dbName -userId $adminLogin -userPassword $adminPassword -uploadFile "FoodLogEntries-beta.csv" -tableName FoodLogEntries
+    Write-Output "done restoring data from backup..."
     #endregion
+
     Write-Output "Done with function 2_Up"
 }
 
