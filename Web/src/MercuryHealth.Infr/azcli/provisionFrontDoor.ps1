@@ -112,8 +112,8 @@ function 1_Up {
     $fqdnWebApp = $webAppName + ".azurewebsites.net"
     Write-Output "fqdn of webapp: $fqdnWebApp"
     az network front-door create `
-        --backend-address $fqdnWebApp
-        --name $frontDoorName
+        --backend-address $fqdnWebApp `
+        --name $frontDoorName `
         --resource-group $resourceGroupName
     Write-Output "Done creating Front Door"
     Write-Output ""
