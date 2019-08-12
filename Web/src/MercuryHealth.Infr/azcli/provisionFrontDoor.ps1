@@ -82,7 +82,7 @@ function 1_Up {
     az group deployment create `
         --name azuredeployfd `
         --resource-group $resourceGroupName `
-        --template-file "$agentReleaseDirectory/_MercuryHealthFull-CI/web/IaC/Web/src/MercuryHealth.Infr/azcli/frontdoorazuredeploy.json" `
+        --template-file "C:\agent4\_work\r1\a\_MercuryHealthFull-CI\web\IaC\Web\src\MercuryHealth.Infr\azcli\frontdoorazuredeploy.json" `
         --parameters frontDoorName=$frontDoorName `
                     backendPool1Address1="$webAppName.azurewebsites.net" `
                     backendPool2Address1="$backendFunctionName.azurewebsites.net" `

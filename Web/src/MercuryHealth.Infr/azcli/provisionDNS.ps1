@@ -113,7 +113,7 @@ function 1_Up {
 
     # this either updates or adds a new dns entry to cloudflare
     #
-    $frontDoorFQDN=$frontDoorName + ".azurefd.net"
+    $frontDoorFQDN=$frontDoorName + ".azurewebsites.net"
     Write-Output "front door fqdn: $frontDoorFQDN"
     if ($foundDnsEntry -eq $true) {
         Write-Output "updating dns entry..."
@@ -209,7 +209,7 @@ function 2_Up {
     # this either updates or adds a new dns entry to cloudflare for
     # the apex domain url abelurlist.club
     #
-    $frontDoorFQDN=$frontDoorName + ".azurefd.net"
+    $frontDoorFQDN=$frontDoorName + ".azurewebsites.net"
     if ($foundDnsEntry -eq $true) {
         Write-Output "updating dns entry..."
         $headers = New-Object "System.Collections.Generic.Dictionary[[String],[String]]"

@@ -74,7 +74,7 @@
                                     "id": "[resourceId('Microsoft.Network/frontDoors/frontendEndpoints', parameters('frontDoorName'), 'frontendEndpoint1')]"
                                 },
                                 {
-                                    "id": "[resourceId('Microsoft.Network/frontDoors/frontendEndpoints', parameters('frontDoorName'), 'www-mercuryhealth-com')]"
+                                    "id": "[resourceId('Microsoft.Network/frontDoors/frontendEndpoints', parameters('frontDoorName'), 'www-abelmercuryhealth-com')]"
                                 }  
                             ],
                             "acceptedProtocols": [
@@ -130,7 +130,7 @@
                                     "id": "[resourceId('Microsoft.Network/frontDoors/frontendEndpoints', parameters('frontDoorName'), 'frontendEndpoint1')]"
                                 },
                                 {
-                                    "id": "[resourceId('Microsoft.Network/frontDoors/frontendEndpoints', parameters('frontDoorName'), 'www-abelurlist-club')]"
+                                    "id": "[resourceId('Microsoft.Network/frontDoors/frontendEndpoints', parameters('frontDoorName'), 'www-abelmercuryhealth-com')]"
                                 }  
                             ],
                             "acceptedProtocols": [
