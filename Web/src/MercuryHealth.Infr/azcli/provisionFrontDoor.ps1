@@ -45,11 +45,7 @@ param(
 
     [Parameter(Mandatory = $True)]
     [string]
-    $friendlyDnsName,
-
-    [Parameter(Mandatory = $True)]
-    [string]
-    $webAppName
+    $friendlyDnsName
 )
 
 #region Login
