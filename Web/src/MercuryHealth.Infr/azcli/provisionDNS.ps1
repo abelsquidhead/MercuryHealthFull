@@ -300,7 +300,8 @@ function 2_Up {
     # Add in the apex domain rule
     #
     Write-Output "adding apex domain rule..."
-    $json = "{`"targets`":[{`"target`":`"url`", `"constraint`":{`"operator`":`"matches`",`"value`":`"$(nakedDns)/*`"}}],`"actions`":[{`"id`":`"forwarding_url`",`"value`": {`"url`": `"https://$(dnsName)/$1`",`"status_code`": 301}}],`"priority`":1,`"status`":`"active`"}"
+    $json = '{"targets`:[{"target":"url", "constraint":{"operator":"matches","value":"' + $(nakedDns) + '/*"}}],"actions":[{"id":"forwarding_url","value": {"url": "https://' + $(dnsName) + '/$1","status_code": 301}}],"priority":1,"status":"active"}'
+    Write-Output "body: $json"
     $headers = New-Object "System.Collections.Generic.Dictionary[[String],[String]]"
     $headers.Add("X-Auth-Key", $cloudFlareKey)
     $headers.Add("X-Auth-Email", $cloudFlareEmail)
