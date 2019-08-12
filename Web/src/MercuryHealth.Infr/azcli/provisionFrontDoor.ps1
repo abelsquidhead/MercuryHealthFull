@@ -45,7 +45,11 @@ param(
 
     [Parameter(Mandatory = $True)]
     [string]
-    $friendlyDnsName
+    $friendlyDnsName,
+
+    [Parameter(Mandatory = $True)]
+    [string]
+    $webAppName
 )
 
 #region Login
@@ -75,20 +79,17 @@ Write-Output ""
 # for Front Door using an ARM template
 #
 function 1_Up {
-    # this creates front door from an arm template. Ironically, there are some stuff in front door
-    # that can't be configured by the Azure CLI at this moment. 
-    # 
-    Write-Output "creating Front Door: $frontDoorName..."
-    az group deployment create `
-        --name azuredeployfd `
+    # this sets the custom domain name in web app
+    #
+    Write-Output "mapping custom domain..."
+    az webapp config hostname add `
+        --webapp-name $webAppName `
         --resource-group $resourceGroupName `
-        --template-file "C:\agent4\_work\r1\a\_MercuryHealthFull-CI\web\IaC\Web\src\MercuryHealth.Infr\azcli\frontdoorazuredeploy.json" `
-        --parameters frontDoorName=$frontDoorName `
-                    backendPool1Address1="$webAppName.azurewebsites.net" `
-                    backendPool2Address1="$backendFunctionName.azurewebsites.net" `
-                    customDomainName="$dnsName"
-    Write-Output "Done creating Front Door"
+        --hostname $dnsName
+
+    Write-Output "done mapping custom domain"
     Write-Output ""
+
 
     # this addes the front door extension to the azure cli. It's currently in preview
     # hopefully i can remove this soon
@@ -96,17 +97,38 @@ function 1_Up {
     az extension add `
         --name front-door
 
+    # this creates front door from an arm template. Ironically, there are some stuff in front door
+    # that can't be configured by the Azure CLI at this moment. 
+    # 
+    Write-Output "creating Front Door: $frontDoorName..."
+    # az group deployment create `
+    #     --name azuredeployfd `
+    #     --resource-group $resourceGroupName `
+    #     --template-file "C:\agent4\_work\r1\a\_MercuryHealthFull-CI\web\IaC\Web\src\MercuryHealth.Infr\azcli\frontdoorazuredeploy.json" `
+    #     --parameters frontDoorName=$frontDoorName `
+    #                 backendPool1Address1="$webAppName.azurewebsites.net" `
+    #                 backendPool2Address1="$backendFunctionName.azurewebsites.net" `
+    #                 customDomainName="$dnsName"
+    $fqdnWebApp = $webAppName + ".azurewebsites.net"
+    Write-Output "fqdn of webapp: $fqdnWebApp"
+    az network front-door create `
+        --backend-address $fqdnWebApp
+        --name $frontDoorName
+        --resource-group $resourceGroupName
+    Write-Output "Done creating Front Door"
+    Write-Output ""
+
     # this enables https for the custom domain front end host using the Azure CLI.
     # Ironically, there are some stuff in front door that can't be configured using 
     # ARM templates at this moment.
     #
-    Write-Output "enabling https for front end host $friendlyDnsName..."
-    az network front-door frontend-endpoint enable-https `
-        --front-door-name $frontDoorName `
-        --name $friendlyDnsName `
-        --resource-group $resourceGroupName
-    Write-Output "Done enabling https"
-    Write-Output ""
+    # Write-Output "enabling https for front end host $friendlyDnsName..."
+    # az network front-door frontend-endpoint enable-https `
+    #     --front-door-name $frontDoorName `
+    #     --name $friendlyDnsName `
+    #     --resource-group $resourceGroupName
+    # Write-Output "Done enabling https"
+    # Write-Output ""
 }
 
 Install-Module -Name VersionInfrastructure -Force -Scope CurrentUser
