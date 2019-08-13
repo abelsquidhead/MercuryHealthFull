@@ -212,35 +212,35 @@ function 2_Up {
     $frontDoorFQDN=$frontDoorName + ".azurewebsites.net"
     if ($foundDnsEntry -eq $true) {
         Write-Output "updating dns entry..."
-        # $headers = New-Object "System.Collections.Generic.Dictionary[[String],[String]]"
-        # $headers.Add("X-Auth-Key", $cloudFlareKey)
-        # $headers.Add("X-Auth-Email", $cloudFlareEmail)
-        # $updateDnsEntry = @{
-        #     type='CNAME'
-        #     name='@'
-        #     content="$frontDoorFQDN"
-        #     proxied=$true
-        # }
-        # $json = $updateDnsEntry | ConvertTo-Json
-        # $updateDnsResponse = $(Invoke-RestMethod "https://api.cloudflare.com/client/v4/zones/$cloudFlareZone/dns_records/$foundDnsEntryId" `
-        #     -Headers $headers `
-        #     -Method Put `
-        #     -Body $json `
-        #     -ContentType 'application/json')
-
-        # Write-Output "done updating dns"
-        # Write-Output "cloudflare response: "
-        # Write-Output $updateDnsResponse
-        # Write-Output ""
-
         $headers = New-Object "System.Collections.Generic.Dictionary[[String],[String]]"
         $headers.Add("X-Auth-Key", $cloudFlareKey)
         $headers.Add("X-Auth-Email", $cloudFlareEmail)
-
+        $updateDnsEntry = @{
+            type='CNAME'
+            name='@'
+            content="$frontDoorFQDN"
+            proxied=$true
+        }
+        $json = $updateDnsEntry | ConvertTo-Json
         $updateDnsResponse = $(Invoke-RestMethod "https://api.cloudflare.com/client/v4/zones/$cloudFlareZone/dns_records/$foundDnsEntryId" `
             -Headers $headers `
-            -Method Delete `
+            -Method Put `
+            -Body $json `
             -ContentType 'application/json')
+
+        Write-Output "done updating dns"
+        Write-Output "cloudflare response: "
+        Write-Output $updateDnsResponse
+        Write-Output ""
+
+        # $headers = New-Object "System.Collections.Generic.Dictionary[[String],[String]]"
+        # $headers.Add("X-Auth-Key", $cloudFlareKey)
+        # $headers.Add("X-Auth-Email", $cloudFlareEmail)
+
+        # $updateDnsResponse = $(Invoke-RestMethod "https://api.cloudflare.com/client/v4/zones/$cloudFlareZone/dns_records/$foundDnsEntryId" `
+        #     -Headers $headers `
+        #     -Method Delete `
+        #     -ContentType 'application/json')
 
         Write-Output "done updating dns"
         Write-Output ""
