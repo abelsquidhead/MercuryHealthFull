@@ -212,30 +212,40 @@ function 2_Up {
     $frontDoorFQDN=$frontDoorName + ".azurewebsites.net"
     if ($foundDnsEntry -eq $true) {
         Write-Output "updating dns entry..."
+        # $headers = New-Object "System.Collections.Generic.Dictionary[[String],[String]]"
+        # $headers.Add("X-Auth-Key", $cloudFlareKey)
+        # $headers.Add("X-Auth-Email", $cloudFlareEmail)
+        # $updateDnsEntry = @{
+        #     type='CNAME'
+        #     name='@'
+        #     content="$frontDoorFQDN"
+        #     proxied=$true
+        # }
+        # $json = $updateDnsEntry | ConvertTo-Json
+        # $updateDnsResponse = $(Invoke-RestMethod "https://api.cloudflare.com/client/v4/zones/$cloudFlareZone/dns_records/$foundDnsEntryId" `
+        #     -Headers $headers `
+        #     -Method Put `
+        #     -Body $json `
+        #     -ContentType 'application/json')
+
+        # Write-Output "done updating dns"
+        # Write-Output "cloudflare response: "
+        # Write-Output $updateDnsResponse
+        # Write-Output ""
+
         $headers = New-Object "System.Collections.Generic.Dictionary[[String],[String]]"
         $headers.Add("X-Auth-Key", $cloudFlareKey)
         $headers.Add("X-Auth-Email", $cloudFlareEmail)
-        $updateDnsEntry = @{
-            type='CNAME'
-            name='@'
-            content="$frontDoorFQDN"
-            proxied=$true
-        }
-        $json = $updateDnsEntry | ConvertTo-Json
+
         $updateDnsResponse = $(Invoke-RestMethod "https://api.cloudflare.com/client/v4/zones/$cloudFlareZone/dns_records/$foundDnsEntryId" `
             -Headers $headers `
-            -Method Put `
-            -Body $json `
+            -Method Delete `
             -ContentType 'application/json')
 
         Write-Output "done updating dns"
-        Write-Output "cloudflare response: "
-        Write-Output $updateDnsResponse
-        Write-Output ""
-        Write-Output "done updating dns"
         Write-Output ""
     }
-    else {
+    # else {
         Write-Output "adding new dns entry..."
         $headers = New-Object "System.Collections.Generic.Dictionary[[String],[String]]"
         $headers.Add("X-Auth-Key", $cloudFlareKey)
@@ -259,8 +269,8 @@ function 2_Up {
         Write-Output $newDnsResponse
         Write-Output ""
         Write-Output "done adding new dns entry"
-        Write-Output ""
-    }
+    #     Write-Output ""
+    # }
 
     # this looks to see if we need to add a page rule for apex domain
     # first by looking up all the rules
