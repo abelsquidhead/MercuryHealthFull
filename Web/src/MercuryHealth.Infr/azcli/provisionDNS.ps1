@@ -245,7 +245,7 @@ function 2_Up {
         Write-Output "done updating dns"
         Write-Output ""
     }
-    # else {
+    else {
         Write-Output "adding new dns entry..."
         $headers = New-Object "System.Collections.Generic.Dictionary[[String],[String]]"
         $headers.Add("X-Auth-Key", $cloudFlareKey)
@@ -269,8 +269,8 @@ function 2_Up {
         Write-Output $newDnsResponse
         Write-Output ""
         Write-Output "done adding new dns entry"
-    #     Write-Output ""
-    # }
+        Write-Output ""
+    }
 
     # this looks to see if we need to add a page rule for apex domain
     # first by looking up all the rules
