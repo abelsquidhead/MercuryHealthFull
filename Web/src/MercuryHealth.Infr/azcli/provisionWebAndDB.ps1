@@ -172,6 +172,7 @@ function Restore-Data {
 #endregion
 
 
+
 # this defines my time 1 up function which will deploy and configure the infrastructure 
 # for my web app service and sql server
 function 1_Up {
@@ -336,6 +337,8 @@ function 1_Up {
     Write-Output "Done with function 1_Up"
     Write-Output ""
 }
+
+
 
 # this defines my time 2 up fuction which will set up and restore database from backups
 function 2_UP {

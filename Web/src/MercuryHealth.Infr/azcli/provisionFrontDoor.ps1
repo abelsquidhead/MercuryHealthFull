@@ -75,16 +75,16 @@ Write-Output ""
 # for Front Door using an ARM template
 #
 function 1_Up {
-    # this sets the custom domain name in web app
-    #
-    Write-Output "mapping custom domain..."
-    az webapp config hostname add `
-        --webapp-name $webAppName `
-        --resource-group $resourceGroupName `
-        --hostname $dnsName
+    # # this sets the custom domain name in web app
+    # #
+    # Write-Output "mapping custom domain..."
+    # az webapp config hostname add `
+    #     --webapp-name $webAppName `
+    #     --resource-group $resourceGroupName `
+    #     --hostname $dnsName
 
-    Write-Output "done mapping custom domain"
-    Write-Output ""
+    # Write-Output "done mapping custom domain"
+    # Write-Output ""
 
 
     # this addes the front door extension to the azure cli. It's currently in preview
