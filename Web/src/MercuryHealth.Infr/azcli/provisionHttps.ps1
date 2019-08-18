@@ -79,7 +79,7 @@ Write-Output ""
 function 1_Up {
     
     Write-Output "getting dev certificate..."
-    $kvSecretBytes = [System.Convert]::FromBase64String($(pfx))
+    $kvSecretBytes = [System.Convert]::FromBase64String($pfx)
     $certCollection = New-Object System.Security.Cryptography.X509Certificates.X509Certificate2Collection
     $certCollection.Import($kvSecretBytes,$null,[System.Security.Cryptography.X509Certificates.X509KeyStorageFlags]::Exportable)
     Write-Output "done getting dev certificate"
