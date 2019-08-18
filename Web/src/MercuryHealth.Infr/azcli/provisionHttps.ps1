@@ -37,7 +37,15 @@ param(
 
     [Parameter(Mandatory = $True)]  
     [string]
-    $certificateThumbprint
+    $certificateThumbprint,
+
+    [Parameter(Mandatory = $True)]  
+    [string]
+    $pfx,
+
+    [Parameter(Mandatory = $True)]  
+    [string]
+    $pfxPassword
 )
 
 
@@ -69,16 +77,44 @@ Write-Output ""
 # this defines my time 1 up function which will configure https for my apps front door
 #
 function 1_Up {
+    
+    Write-Output "getting dev certificate..."
+    $kvSecretBytes = [System.Convert]::FromBase64String($(pfx))
+    $certCollection = New-Object System.Security.Cryptography.X509Certificates.X509Certificate2Collection
+    $certCollection.Import($kvSecretBytes,$null,[System.Security.Cryptography.X509Certificates.X509KeyStorageFlags]::Exportable)
+    Write-Output "done getting dev certificate"
+    Write-Output ""
+
+    Write-Output "saving pfx to disk"
+    $password = $pfxPassword
+    $protectedCertificateBytes = $certCollection.Export([System.Security.Cryptography.X509Certificates.X509ContentType]::Pkcs12, $password)
+    $pfxPath = [Environment]::GetFolderPath("Desktop") + "\MyCert.pfx"
+    [System.IO.File]::WriteAllBytes($pfxPath, $protectedCertificateBytes)
+    Write-Output "done saving pfx to disk"
+    Write-Output ""
+
+    Write-Output "uploading certificate, getting thumbprint"
+    $thumbprint=$(az webapp config ssl upload `
+    --name $webAppName `
+    --resource-group <resource-group-name> `
+    --certificate-file $pfxPath `
+    --certificate-password $pfxPassword `
+    --query thumbprint `
+    --output tsv)
+    Write-Output "done uploading certificate, thumbprint: $thumbprint"
+    Write-Output ""
+
+
     Write-Output " adding custom domain and adding certificate "
     az webapp config hostname add `
         --webapp-name $webAppName `
         --resource-group mercuryhealth-rg `
         --hostname $dnsName
-
+    
     az webapp config ssl bind `
         --name $webAppName `
         --resource-group $resourceGroupName `
-        --certificate-thumbprint $certificateThumbprint `
+        --certificate-thumbprint $thumbprint `
         --ssl-type SNI
 
     Write-Output "Done with function 1_Up"
