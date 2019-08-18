@@ -96,7 +96,7 @@ function 1_Up {
     Write-Output "uploading certificate, getting thumbprint"
     $thumbprint=$(az webapp config ssl upload `
     --name $webAppName `
-    --resource-group <resource-group-name> `
+    --resource-group $resourceGroupName `
     --certificate-file $pfxPath `
     --certificate-password $pfxPassword `
     --query thumbprint `
