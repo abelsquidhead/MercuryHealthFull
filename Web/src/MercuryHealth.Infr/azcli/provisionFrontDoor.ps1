@@ -66,7 +66,7 @@ Write-Output ""
 #
 Write-Output "Setting default azure subscription..."
 az account set `
-    --subscription "ca-abewan-demo-test"
+    --subscription "$resourceGroupName"
 Write-Output "Done"
 Write-Output ""
 #endregion
