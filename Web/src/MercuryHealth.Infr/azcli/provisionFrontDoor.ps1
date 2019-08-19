@@ -66,7 +66,7 @@ Write-Output ""
 #
 Write-Output "Setting default azure subscription..."
 az account set `
-    --subscription "$resourceGroupName"
+    --subscription $azureSubscriptionName
 Write-Output "Done"
 Write-Output ""
 #endregion
