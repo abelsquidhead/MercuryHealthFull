@@ -35,6 +35,7 @@ namespace MercuryHealth.Web.Controllers
         public ActionResult Index()
         {
             return View(repository.GetAll().ToList());
+            // added a comment
         }
 
         // GET: FoodLogEntries/Details/5
