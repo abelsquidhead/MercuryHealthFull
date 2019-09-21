@@ -88,90 +88,6 @@ Write-Output ""
 #endregion
 
 
-#region function to upload default data
-# this function uploads default data to a table
-#
-function Restore-Data {
-    param(
-        [Parameter(Mandatory = $True)]
-        [string]
-        $dbServerName,
-
-        [Parameter(Mandatory = $True)]
-        [string]
-        $dbId,
-
-        [Parameter(Mandatory = $True)]
-        [string]
-        $userId,
-
-        [Parameter(Mandatory = $True)]
-        [string]
-        $userPassword,
-
-        [Parameter(Mandatory = $True)]
-        [string]
-        $currEnv,
-
-        [Parameter(Mandatory = $True)]
-        [string]
-        $tableName
-    )
-
-    Write-Output "currEnv is: $currEnv"
-
-    if ($currEnv -eq "[Beta]") {
-        Write-Output "restoring data from backup..."
-        Invoke-Sqlcmd -ConnectionString "Server=tcp:$dbServerName.database.windows.net,1433;Initial Catalog=$dbId;Persist Security Info=False;User ID=$userId;Password=$userPassword;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;" `
-            -Query "INSERT INTO FoodLogEntries (Description, Quantity, MealTime, Tags, Calories, ProteinInGrams, FatInGrams, CarbohydratesInGrams, SodiumInGrams, MemberProfile_Id, Color) `
-                    VALUES ('Cheeseburger', 1, 8/11/2019, 'lunch, junky', 1215, 3.2, 12.8, 27, 33, null , null)"
-        Invoke-Sqlcmd -ConnectionString "Server=tcp:$dbServerName.database.windows.net,1433;Initial Catalog=$dbId;Persist Security Info=False;User ID=$userId;Password=$userPassword;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;" `
-            -Query "INSERT INTO FoodLogEntries (Description, Quantity, MealTime, Tags, Calories, ProteinInGrams, FatInGrams, CarbohydratesInGrams, SodiumInGrams, MemberProfile_Id, Color) `
-                    VALUES ('Fries', 1, 8/11/2019, 'lunch, junky', 543, .34,.22 , 12, 4.2, null , null)"
-        Invoke-Sqlcmd -ConnectionString "Server=tcp:$dbServerName.database.windows.net,1433;Initial Catalog=$dbId;Persist Security Info=False;User ID=$userId;Password=$userPassword;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;" `
-            -Query "INSERT INTO FoodLogEntries (Description, Quantity, MealTime, Tags, Calories, ProteinInGrams, FatInGrams, CarbohydratesInGrams, SodiumInGrams, MemberProfile_Id, Color) `
-                    VALUES ('BETA Food', 1, 8/11/2019, 'demo', 1215, 3.2, 12.8, 27, 33, null , null)"
-
-        Invoke-Sqlcmd -ConnectionString "Server=tcp:$dbServerName.database.windows.net,1433;Initial Catalog=$dbId;Persist Security Info=False;User ID=$userId;Password=$userPassword;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;" `
-            -Query "INSERT INTO Exercises (Name, Description, VideoUrl, MusclesInvolved, Equipment) `
-                    VALUES ('Walking', 'Walking 2 miles', null, 'Legs, heart, lung', 'Walking Shoes')"
-        Invoke-Sqlcmd -ConnectionString "Server=tcp:$dbServerName.database.windows.net,1433;Initial Catalog=$dbId;Persist Security Info=False;User ID=$userId;Password=$userPassword;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;" `
-            -Query "INSERT INTO Exercises (Name, Description, VideoUrl, MusclesInvolved, Equipment) `
-                    VALUES ('Talking', 'Talking energetically', null, 'Mouth, heart, lung', 'None')"
-        Invoke-Sqlcmd -ConnectionString "Server=tcp:$dbServerName.database.windows.net,1433;Initial Catalog=$dbId;Persist Security Info=False;User ID=$userId;Password=$userPassword;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;" `
-            -Query "INSERT INTO Exercises (Name, Description, VideoUrl, MusclesInvolved, Equipment) `
-                    VALUES ('Beta Exercise', 'Demo', null, 'Everything', 'laptop and phone')"
-        Write-Output "done restoring data from backup"
-    }
-    else {
-        Write-Output "restoring data from backup..."
-        Invoke-Sqlcmd -ConnectionString "Server=tcp:$dbServerName.database.windows.net,1433;Initial Catalog=$dbId;Persist Security Info=False;User ID=$userId;Password=$userPassword;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;" `
-            -Query "INSERT INTO FoodLogEntries (Description, Quantity, MealTime, Tags, Calories, ProteinInGrams, FatInGrams, CarbohydratesInGrams, SodiumInGrams, MemberProfile_Id, Color) `
-                    VALUES ('Apple', 1, 8/11/2019, 'fruit, lunch', 112, 3.2, 12.8, 27, 33, null , null)"
-        Invoke-Sqlcmd -ConnectionString "Server=tcp:$dbServerName.database.windows.net,1433;Initial Catalog=$dbId;Persist Security Info=False;User ID=$userId;Password=$userPassword;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;" `
-            -Query "INSERT INTO FoodLogEntries (Description, Quantity, MealTime, Tags, Calories, ProteinInGrams, FatInGrams, CarbohydratesInGrams, SodiumInGrams, MemberProfile_Id, Color) `
-                    VALUES ('Eggs', 2, 8/11/2019, 'protein', 84, 340,.22 , 12, 4.2, null , null)"
-        Invoke-Sqlcmd -ConnectionString "Server=tcp:$dbServerName.database.windows.net,1433;Initial Catalog=$dbId;Persist Security Info=False;User ID=$userId;Password=$userPassword;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;" `
-            -Query "INSERT INTO FoodLogEntries (Description, Quantity, MealTime, Tags, Calories, ProteinInGrams, FatInGrams, CarbohydratesInGrams, SodiumInGrams, MemberProfile_Id, Color) `
-                    VALUES ('PROD Food', 1, 8/11/2019, 'demo', 1215, 3.2, 12.8, 27, 33, null , null)"
-
-        Invoke-Sqlcmd -ConnectionString "Server=tcp:$dbServerName.database.windows.net,1433;Initial Catalog=$dbId;Persist Security Info=False;User ID=$userId;Password=$userPassword;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;" `
-            -Query "INSERT INTO Exercises (Name, Description, VideoUrl, MusclesInvolved, Equipment) `
-                    VALUES ('Walking', 'Power walking 5 miles', null, 'Legs, heart, lung', 'Walking Shoes')"
-        Invoke-Sqlcmd -ConnectionString "Server=tcp:$dbServerName.database.windows.net,1433;Initial Catalog=$dbId;Persist Security Info=False;User ID=$userId;Password=$userPassword;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;" `
-            -Query "INSERT INTO Exercises (Name, Description, VideoUrl, MusclesInvolved, Equipment) `
-                    VALUES ('Running', 'Marathon Training', null, 'Mouth, heart, lung', 'None')"
-        Invoke-Sqlcmd -ConnectionString "Server=tcp:$dbServerName.database.windows.net,1433;Initial Catalog=$dbId;Persist Security Info=False;User ID=$userId;Password=$userPassword;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;" `
-            -Query "INSERT INTO Exercises (Name, Description, VideoUrl, MusclesInvolved, Equipment) `
-                    VALUES ('PROD Exercise', 'Demo', null, 'Everything', 'laptop and phone')"
-
-        Write-Output "done restoring data from backup"
-
-    }
-}
-#endregion
-
-
 
 # this defines my time 1 up function which will deploy and configure the infrastructure 
 # for my web app service and sql server
@@ -254,7 +170,7 @@ function 1_Up {
         az appservice plan create `
         --name $("$webAppName" + "plan") `
         --resource-group $resourceGroupName `
-        --sku S1
+        --sku P3V2
     }
     catch {
         Write-Output "app service already exists."
@@ -356,13 +272,105 @@ function 2_UP {
         -Query "IF NOT EXISTS (SELECT * FROM sysobjects WHERE name='Exercises' and xtype='U') CREATE TABLE Exercises ( Id UNIQUEIDENTIFIER DEFAULT (newid()) NOT NULL, Name NVARCHAR (MAX) NULL, Description NVARCHAR (MAX) NULL, VideoUrl NVARCHAR (MAX) NULL, MusclesInvolved NVARCHAR (MAX) NULL, Equipment NVARCHAR (MAX) NULL, Exercise_Id UNIQUEIDENTIFIER NULL);"   
     Write-Output "done creating db tables"
     Write-Output ""
+    #endregion  
     
+    #region restoring backup of database if needed
+    # this block creates 
+    Write-Output "restoring data from backup..."
     Restore-Data -dbServerName $serverName -dbId $dbName -userId $adminLogin -userPassword $adminPassword -currEnv $environment -tableName FoodLogEntries
+    Write-Output "done restoring data"
+    Write-Output ""
     #endregion
 
     Write-Output "Done with function 2_Up"
     Write-Output ""
 }
+
+
+
+# function to restore data fromb backup
+# this function restores data from long term backup to table
+#
+function Restore-Data {
+    param(
+        [Parameter(Mandatory = $True)]
+        [string]
+        $dbServerName,
+
+        [Parameter(Mandatory = $True)]
+        [string]
+        $dbId,
+
+        [Parameter(Mandatory = $True)]
+        [string]
+        $userId,
+
+        [Parameter(Mandatory = $True)]
+        [string]
+        $userPassword,
+
+        [Parameter(Mandatory = $True)]
+        [string]
+        $currEnv,
+
+        [Parameter(Mandatory = $True)]
+        [string]
+        $tableName
+    )
+
+    Write-Output "currEnv is: $currEnv"
+
+    if ($currEnv -eq "[Beta]") {
+        Write-Output "restoring data from backup..."
+        Invoke-Sqlcmd -ConnectionString "Server=tcp:$dbServerName.database.windows.net,1433;Initial Catalog=$dbId;Persist Security Info=False;User ID=$userId;Password=$userPassword;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;" `
+            -Query "INSERT INTO FoodLogEntries (Description, Quantity, MealTime, Tags, Calories, ProteinInGrams, FatInGrams, CarbohydratesInGrams, SodiumInGrams, MemberProfile_Id, Color) `
+                    VALUES ('Cheeseburger', 1, 8/11/2019, 'lunch, junky', 1215, 3.2, 12.8, 27, 33, null , null)"
+        Invoke-Sqlcmd -ConnectionString "Server=tcp:$dbServerName.database.windows.net,1433;Initial Catalog=$dbId;Persist Security Info=False;User ID=$userId;Password=$userPassword;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;" `
+            -Query "INSERT INTO FoodLogEntries (Description, Quantity, MealTime, Tags, Calories, ProteinInGrams, FatInGrams, CarbohydratesInGrams, SodiumInGrams, MemberProfile_Id, Color) `
+                    VALUES ('Fries', 1, 8/11/2019, 'lunch, junky', 543, .34,.22 , 12, 4.2, null , null)"
+        Invoke-Sqlcmd -ConnectionString "Server=tcp:$dbServerName.database.windows.net,1433;Initial Catalog=$dbId;Persist Security Info=False;User ID=$userId;Password=$userPassword;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;" `
+            -Query "INSERT INTO FoodLogEntries (Description, Quantity, MealTime, Tags, Calories, ProteinInGrams, FatInGrams, CarbohydratesInGrams, SodiumInGrams, MemberProfile_Id, Color) `
+                    VALUES ('BETA Food', 1, 8/11/2019, 'demo', 1215, 3.2, 12.8, 27, 33, null , null)"
+
+        Invoke-Sqlcmd -ConnectionString "Server=tcp:$dbServerName.database.windows.net,1433;Initial Catalog=$dbId;Persist Security Info=False;User ID=$userId;Password=$userPassword;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;" `
+            -Query "INSERT INTO Exercises (Name, Description, VideoUrl, MusclesInvolved, Equipment) `
+                    VALUES ('Walking', 'Walking 2 miles', null, 'Legs, heart, lung', 'Walking Shoes')"
+        Invoke-Sqlcmd -ConnectionString "Server=tcp:$dbServerName.database.windows.net,1433;Initial Catalog=$dbId;Persist Security Info=False;User ID=$userId;Password=$userPassword;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;" `
+            -Query "INSERT INTO Exercises (Name, Description, VideoUrl, MusclesInvolved, Equipment) `
+                    VALUES ('Talking', 'Talking energetically', null, 'Mouth, heart, lung', 'None')"
+        Invoke-Sqlcmd -ConnectionString "Server=tcp:$dbServerName.database.windows.net,1433;Initial Catalog=$dbId;Persist Security Info=False;User ID=$userId;Password=$userPassword;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;" `
+            -Query "INSERT INTO Exercises (Name, Description, VideoUrl, MusclesInvolved, Equipment) `
+                    VALUES ('Beta Exercise', 'Demo', null, 'Everything', 'laptop and phone')"
+        Write-Output "done restoring data from backup"
+    }
+    else {
+        Write-Output "restoring data from backup..."
+        Invoke-Sqlcmd -ConnectionString "Server=tcp:$dbServerName.database.windows.net,1433;Initial Catalog=$dbId;Persist Security Info=False;User ID=$userId;Password=$userPassword;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;" `
+            -Query "INSERT INTO FoodLogEntries (Description, Quantity, MealTime, Tags, Calories, ProteinInGrams, FatInGrams, CarbohydratesInGrams, SodiumInGrams, MemberProfile_Id, Color) `
+                    VALUES ('Apple', 1, 8/11/2019, 'fruit, lunch', 112, 3.2, 12.8, 27, 33, null , null)"
+        Invoke-Sqlcmd -ConnectionString "Server=tcp:$dbServerName.database.windows.net,1433;Initial Catalog=$dbId;Persist Security Info=False;User ID=$userId;Password=$userPassword;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;" `
+            -Query "INSERT INTO FoodLogEntries (Description, Quantity, MealTime, Tags, Calories, ProteinInGrams, FatInGrams, CarbohydratesInGrams, SodiumInGrams, MemberProfile_Id, Color) `
+                    VALUES ('Eggs', 2, 8/11/2019, 'protein', 84, 340,.22 , 12, 4.2, null , null)"
+        Invoke-Sqlcmd -ConnectionString "Server=tcp:$dbServerName.database.windows.net,1433;Initial Catalog=$dbId;Persist Security Info=False;User ID=$userId;Password=$userPassword;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;" `
+            -Query "INSERT INTO FoodLogEntries (Description, Quantity, MealTime, Tags, Calories, ProteinInGrams, FatInGrams, CarbohydratesInGrams, SodiumInGrams, MemberProfile_Id, Color) `
+                    VALUES ('PROD Food', 1, 8/11/2019, 'demo', 1215, 3.2, 12.8, 27, 33, null , null)"
+
+        Invoke-Sqlcmd -ConnectionString "Server=tcp:$dbServerName.database.windows.net,1433;Initial Catalog=$dbId;Persist Security Info=False;User ID=$userId;Password=$userPassword;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;" `
+            -Query "INSERT INTO Exercises (Name, Description, VideoUrl, MusclesInvolved, Equipment) `
+                    VALUES ('Walking', 'Power walking 5 miles', null, 'Legs, heart, lung', 'Walking Shoes')"
+        Invoke-Sqlcmd -ConnectionString "Server=tcp:$dbServerName.database.windows.net,1433;Initial Catalog=$dbId;Persist Security Info=False;User ID=$userId;Password=$userPassword;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;" `
+            -Query "INSERT INTO Exercises (Name, Description, VideoUrl, MusclesInvolved, Equipment) `
+                    VALUES ('Running', 'Marathon Training', null, 'Mouth, heart, lung', 'None')"
+        Invoke-Sqlcmd -ConnectionString "Server=tcp:$dbServerName.database.windows.net,1433;Initial Catalog=$dbId;Persist Security Info=False;User ID=$userId;Password=$userPassword;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;" `
+            -Query "INSERT INTO Exercises (Name, Description, VideoUrl, MusclesInvolved, Equipment) `
+                    VALUES ('PROD Exercise', 'Demo', null, 'Everything', 'laptop and phone')"
+
+        Write-Output "done restoring data from backup"
+
+    }
+}
+
+
 
 Install-Module -Name VersionInfrastructure -Force -Scope CurrentUser
 Update-InfrastructureVersion `

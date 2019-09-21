@@ -77,6 +77,8 @@ Write-Output ""
 #
 function 1_Up {
     Write-Output "executing function 1_Up..."
+
+    #region get all dns records from cloudflare
     # this lists all dns records from cloudflare
     #
     Write-Output "getting all dns records from cloudflare..."
@@ -91,8 +93,10 @@ function 1_Up {
     $numEntries=$listDnsResult.result_info.count
     Write-Output "number of dns entries: $numEntries" 
     Write-Output ""
+    #endregion
 
-    # this looks for our dns name, see if it has been set or not
+    #region look at all dns records, see if the our dns name has already 
+    # been set. This block looks for our dns name, see if it has been set or not
     #
     Write-Output "looking for correct DNS entry"
     $foundDnsEntry = $false
@@ -110,7 +114,9 @@ function 1_Up {
     Write-Output "found dns entry: $foundDnsEntry"
     Write-Output "dns entry id: $foundDnsEntryId"
     Write-Output ""
+    #endregion
 
+    #region updates/adds dns entry to cloudflare
     # this either updates or adds a new dns entry to cloudflare
     #
     $frontDoorFQDN=$frontDoorName + ".azurewebsites.net"
@@ -163,6 +169,7 @@ function 1_Up {
         Write-Output $newDnsResponse
         Write-Output ""
     }
+    #endregion
 
     Write-Output "done with function 1_Up"
     Write-Output ""
@@ -173,6 +180,8 @@ function 1_Up {
 #
 function 2_Up {
     Write-Output "Executing function 2_Up"
+
+    #region gets all dns entries from cloudflare
     # this lists all dns records from cloudflare
     #
     Write-Output "getting all dns records from cloudflare..."
@@ -187,8 +196,9 @@ function 2_Up {
     $numEntries=$listDnsResult.result_info.count
     Write-Output "number of dns entries: $numEntries" 
     Write-Output ""
+    #endregion
 
-
+    #region look at all dns records, see if our dns name has already been set
     # this looks for our dns name, see if it has been set or not
     #
     $foundDnsEntry = $false
@@ -204,10 +214,11 @@ function 2_Up {
     Write-Output "found dns entry: $foundDnsEntry"
     Write-Output "dns entry id: $foundDnsEntryId"
     Write-Output ""
+    #endregion
 
-
+    #region update/add  dns entry to cloudflare for apex domain
     # this either updates or adds a new dns entry to cloudflare for
-    # the apex domain url abelurlist.club
+    # the apex domain
     #
     $frontDoorFQDN=$frontDoorName + ".azurewebsites.net"
     if ($foundDnsEntry -eq $true) {
@@ -232,15 +243,6 @@ function 2_Up {
         Write-Output "cloudflare response: "
         Write-Output $updateDnsResponse
         Write-Output ""
-
-        # $headers = New-Object "System.Collections.Generic.Dictionary[[String],[String]]"
-        # $headers.Add("X-Auth-Key", $cloudFlareKey)
-        # $headers.Add("X-Auth-Email", $cloudFlareEmail)
-
-        # $updateDnsResponse = $(Invoke-RestMethod "https://api.cloudflare.com/client/v4/zones/$cloudFlareZone/dns_records/$foundDnsEntryId" `
-        #     -Headers $headers `
-        #     -Method Delete `
-        #     -ContentType 'application/json')
 
         Write-Output "done updating dns"
         Write-Output ""
@@ -271,7 +273,9 @@ function 2_Up {
         Write-Output "done adding new dns entry"
         Write-Output ""
     }
+    #endregion
 
+    #region check page rules
     # this looks to see if we need to add a page rule for apex domain
     # first by looking up all the rules
     #
@@ -288,8 +292,10 @@ function 2_Up {
     $numEntries=$listRulesResult.result_info.count
     Write-Output "number of dns entries: $numEntries" 
     Write-Output ""
+    #endregion
    
-    ## delete these old rule entries
+    #region delete old page rules
+    # delete these old rule entries
     #
     Write-Output "deleting all rule entries..."
     $listRulesResult.result | ForEach-Object {
@@ -306,7 +312,9 @@ function 2_Up {
     }
     Write-Output "done deleting all rule entries"    
     Write-Output ""
+    #endregion
 
+    #region add new apex domain rules
     # Add in the apex domain rule
     #
     Write-Output "adding apex domain rule..."
@@ -324,6 +332,7 @@ function 2_Up {
     Write-Output $addRuleResponse
     Write-Output "done adding apex domain rule"
     Write-Output ""
+    #endregion
 
     Write-Output "done with 2_Up"
     Write-Output ""

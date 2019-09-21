@@ -70,7 +70,6 @@ az account set `
 Write-Output "Done"
 Write-Output ""
 #endregion
-
 # this defines my time 1 up function which will deploy and configure the infrastructure 
 # for Front Door using an ARM template
 #
