@@ -166,30 +166,18 @@ function 1_Up {
     # create app service plan
     #
     Write-Output "creating app service plan..."
-    try {
-        az appservice plan create `
+    az appservice plan create `
         --name $("$webAppName" + "plan") `
         --resource-group $resourceGroupName `
         --sku P3V2
-    }
-    catch {
-        Write-Output "app service already exists."
-        Write-Output "exception: " + $_
-    }
     Write-Output "done creating app service plan"
     Write-Output ""
 
     Write-Output "creating web app..."
-    try {
-        az webapp create `
+    az webapp create `
         --name $webAppName `
         --plan $("$webAppName" + "plan") `
         --resource-group $resourceGroupName
-
-    }
-    catch {
-        Write-Output "web app already exists"
-    }
     Write-Output "done creating web app"
     Write-Output ""
 
