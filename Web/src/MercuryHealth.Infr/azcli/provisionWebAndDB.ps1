@@ -174,6 +174,7 @@ function 1_Up {
     }
     catch {
         Write-Output "app service already exists."
+        Write-Output "exception: " + $_
     }
     Write-Output "done creating app service plan"
     Write-Output ""
