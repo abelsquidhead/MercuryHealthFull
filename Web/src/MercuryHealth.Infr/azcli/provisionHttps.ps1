@@ -108,7 +108,7 @@ function 1_Up {
     Write-Output " adding custom domain and adding certificate "
     az webapp config hostname add `
         --webapp-name $webAppName `
-        --resource-group mercuryhealth-rg `
+        --resource-group $resourceGroupName `
         --hostname $dnsName
     
     az webapp config ssl bind `
