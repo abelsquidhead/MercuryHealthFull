@@ -61,7 +61,15 @@ param(
 
     [Parameter(Mandatory = $True)]  
     [string]
-    $environment
+    $environment,
+
+    [Parameter(Mandatory = $True)]  
+    [string]
+    $appServiceRegion,
+
+    [Parameter(Mandatory = $True)]  
+    [string]
+    $appServiceSKU
 )
 
 
@@ -154,7 +162,8 @@ function 1_Up {
     az appservice plan create `
         --name $("$webAppName" + "plan") `
         --resource-group $resourceGroupName `
-        --sku S1
+        --location $appServiceRegion `
+        --sku $appServiceSKU
     Write-Output "done creating app service plan"
     Write-Output ""
 
