@@ -74,6 +74,12 @@ Write-Output ""
 # for Front Door using an ARM template
 #
 function 1_Up {
+    # this addes the front door extension to the azure cli. It's currently in preview
+    # hopefully i can remove this soon
+    #
+    az extension add `
+        --name front-door
+
     # this creates front door from an arm template. Ironically, there are some stuff in front door
     # that can't be configured by the Azure CLI at this moment. 
     # 
