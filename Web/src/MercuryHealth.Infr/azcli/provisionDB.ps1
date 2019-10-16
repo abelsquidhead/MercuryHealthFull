@@ -143,8 +143,7 @@ function 2_UP {
         /tcs:"Data Source=$serverName;Initial Catalog=$dbName;User Id=$adminLogin;Password=$adminPassword" `
         /sf:$filename `
         /p:DatabaseEdition=Premium `
-        /p:DatabaseServiceObjective=P6 `
-        /tdn:$dbName
+        /p:DatabaseServiceObjective=P6
     Write-Output "Done restoring DB from backpac"
     Write-Output ""
 
