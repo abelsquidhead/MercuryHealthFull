@@ -129,7 +129,8 @@ function 2_UP {
     Write-Output ""
     $source = "https://mhinfratoolsstorage.blob.core.windows.net/db-backups/mhdb-2019-10-14-7-15.bacpac"
     $filename = [System.IO.Path]::GetFileName($source)
-    $dest = "."
+    $dest = "./$filename"
+    Write-Output "    destination filename: $dest"
     $wc = New-Object System.Net.WebClient
     $wc.DownloadFile($source, $dest)
     Write-Output "Done downloading backpac"
