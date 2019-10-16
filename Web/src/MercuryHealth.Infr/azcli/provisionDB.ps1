@@ -140,7 +140,7 @@ function 2_UP {
     Write-Output ""
     & "c:\Program Files\Microsoft SQL Server\150\DAC\bin\SqlPackage.exe" `
         /a:import `
-        /tcs:"Data Source=$serverName;Initial Catalog=$dbName;User Id=$adminLogin;Password=$adminPassword" `
+        /tcs:"Data Source=$serverName.database.windows.net;Initial Catalog=$dbName;User Id=$adminLogin;Password=$adminPassword" `
         /sf:$filename `
         /p:DatabaseEdition=Premium `
         /p:DatabaseServiceObjective=P6
