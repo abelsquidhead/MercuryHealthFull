@@ -53,7 +53,11 @@ param(
 
     [Parameter(Mandatory = $True)]  
     [string]
-    $dbName
+    $dbName,
+
+    [Parameter(Mandatory = $True)]
+    [string]
+    $dbBackupName
 )
 
 
