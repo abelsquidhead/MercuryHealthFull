@@ -17,10 +17,6 @@ param(
 
     [Parameter(Mandatory = $True)]
     [string]
-    $azureSubscriptionName,
-
-    [Parameter(Mandatory = $True)]
-    [string]
     $resourceGroupName,
 
     [Parameter(Mandatory = $True)]
@@ -131,7 +127,7 @@ function 2_UP {
 
     Write-Output "Downloading bacpac..."
     Write-Output ""
-    $source = "https://mhinfratoolsstorage.blob.core.windows.net/db-backups/mhdb-2019-10-14-7-15.bacpac"
+    $source = "https://mhinfratoolsstorage.blob.core.windows.net/db-backups/$dbBackupName"
     $filename = [System.IO.Path]::GetFileName($source)
     $dest = "./$filename"
     Write-Output "    destination filename: $dest"
