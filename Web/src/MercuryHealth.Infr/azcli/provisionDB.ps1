@@ -127,7 +127,7 @@ function 2_UP {
 
     Write-Output "Downloading bacpac..."
     Write-Output ""
-    $source = "https://mhinfratoolsstorage.blob.core.windows.net/db-backups/$dbBackupName"
+    $source = "https://mhlongtermstorage.blob.core.windows.net/backups/$dbBackupName"
     $filename = [System.IO.Path]::GetFileName($source)
     $dest = "./$filename"
     Write-Output "    destination filename: $dest"
