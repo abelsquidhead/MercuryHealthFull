@@ -17,10 +17,6 @@ param(
 
     [Parameter(Mandatory = $True)]
     [string]
-    $azureSubscriptionName,
-
-    [Parameter(Mandatory = $True)]
-    [string]
     $resourceGroupName,
 
     [Parameter(Mandatory = $True)]
@@ -34,10 +30,6 @@ param(
     [Parameter(Mandatory = $True)]  
     [string]
     $dnsName,
-
-    [Parameter(Mandatory = $True)]  
-    [string]
-    $certificateThumbprint,
 
     [Parameter(Mandatory = $True)]  
     [string]
@@ -61,16 +53,6 @@ az login `
     --tenant $servicePrincipalTenantId
 Write-Output "Done"
 Write-Output ""
-
-# This sets the subscription to the subscription I need all my apps to
-# run in
-#
-Write-Output "Setting default azure subscription..."
-az account set `
-    --subscription $azureSubscriptionName
-Write-Output "Done"
-Write-Output ""
-#endregion
 
 
 
