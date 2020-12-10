@@ -73,7 +73,7 @@ Write-Output ""
 # this defines my time 1 up function which will deploy and configure the infrastructure 
 # for Front Door using an ARM template
 #
-function 1_Up {
+#function 1_Up {
     # this addes the front door extension to the azure cli. It's currently in preview
     # hopefully i can remove this soon
     #
@@ -92,10 +92,10 @@ function 1_Up {
         --resource-group $resourceGroupName
     Write-Output "Done creating Front Door"
     Write-Output ""
-}
+#}
 
-Install-Module -Name VersionInfrastructure -Force -Scope CurrentUser
-Update-InfrastructureVersion `
-    -infraToolsFunctionName $Env:INFRATOOLS_FUNCTIONNAME `
-    -infraToolsTableName $Env:INFRATOOLS_TABLENAME `
-    -deploymentStage $Env:INFRATOOLS_DEPLOYMENTSTAGE
+#Install-Module -Name VersionInfrastructure -Force -Scope CurrentUser
+#Update-InfrastructureVersion `
+#    -infraToolsFunctionName $Env:INFRATOOLS_FUNCTIONNAME `
+#    -infraToolsTableName $Env:INFRATOOLS_TABLENAME `
+#    -deploymentStage $Env:INFRATOOLS_DEPLOYMENTSTAGE
