@@ -58,7 +58,7 @@ Write-Output ""
 
 # this defines my time 1 up function which will configure https for my apps front door
 #
-function 1_Up {
+#function 1_Up {
     
     Write-Output "getting dev certificate..."
     $kvSecretBytes = [System.Convert]::FromBase64String($pfx)
@@ -101,12 +101,12 @@ function 1_Up {
 
     Write-Output "Done with function 1_Up"
     Write-Output ""
-}
+#}
 
 
 
-Install-Module -Name VersionInfrastructure -Force -Scope CurrentUser
-Update-InfrastructureVersion `
-    -infraToolsFunctionName $Env:INFRATOOLS_FUNCTIONNAME `
-    -infraToolsTableName $Env:INFRATOOLS_TABLENAME `
-    -deploymentStage $Env:INFRATOOLS_DEPLOYMENTSTAGE
+#Install-Module -Name VersionInfrastructure -Force -Scope CurrentUser
+#Update-InfrastructureVersion `
+#    -infraToolsFunctionName $Env:INFRATOOLS_FUNCTIONNAME `
+#    -infraToolsTableName $Env:INFRATOOLS_TABLENAME `
+#    -deploymentStage $Env:INFRATOOLS_DEPLOYMENTSTAGE
