@@ -73,7 +73,7 @@ Write-Output ""
 
 # this defines my time 1 up function which will deploy and configure the infrastructure 
 # for my sql server
-function 1_Up {
+#function 1_Up {
     Write-Output "In function 1_Up"
 
     #region Create Resource Group
@@ -116,12 +116,12 @@ function 1_Up {
         
     Write-Output "Done with function 1_Up"
     Write-Output ""
-}
+#}
 
 
 
 # this defines my time 2 up fuction which will set up and restore database from backups
-function 2_UP {
+#function 2_UP {
     Write-Output "In function 2_Up"
     Write-Output ""
 
@@ -149,12 +149,12 @@ function 2_UP {
 
     Write-Output "Done with function 2_Up"
     Write-Output ""
-}
+#}
 
 
 
-Install-Module -Name VersionInfrastructure -Force -Scope CurrentUser
-Update-InfrastructureVersion `
-    -infraToolsFunctionName $Env:INFRATOOLS_FUNCTIONNAME `
-    -infraToolsTableName $Env:INFRATOOLS_TABLENAME `
-    -deploymentStage $Env:INFRATOOLS_DEPLOYMENTSTAGE
+#Install-Module -Name VersionInfrastructure -Force -Scope CurrentUser
+#Update-InfrastructureVersion `
+#    -infraToolsFunctionName $Env:INFRATOOLS_FUNCTIONNAME `
+#    -infraToolsTableName $Env:INFRATOOLS_TABLENAME `
+#    -deploymentStage $Env:INFRATOOLS_DEPLOYMENTSTAGE
